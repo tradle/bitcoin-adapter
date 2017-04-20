@@ -80,8 +80,7 @@ function getNetworkAPI ({ networkName, constants }) {
       addresses: {
         transactions: wrapGetTransactions(addresses.transactions.bind(addresses)),
         unspents: addresses.unspents.bind(addresses)
-      },
-      _advanceToNextBlock: blockchain._advanceToNextBlock
+      }
     }
   }
 
