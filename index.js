@@ -56,7 +56,14 @@ function getNetworkAPI ({ networkName, constants }) {
       },
       addresses: {
         transactions: wrapGetTransactions(addresses.transactions.bind(addresses)),
-        unspents: addresses.unspents.bind(addresses)
+        unspents: addresses.unspents.bind(addresses),
+        balance: function (address, cb) {
+          blockchain.addresses.summary([address], function (err, summaries) {
+            if (err) return cb(err)
+
+            cb(null, summaries[0].balance)
+          })
+        }
       }
     }
   }
