@@ -121,7 +121,7 @@ function getNetworkAPI ({ networkName, constants }) {
       to: {
         addresses: getOutputAddresses(tx)
       },
-      confirmations: txInfo.confirmations || 0,
+      confirmations: txInfo.confirmations || txInfo.__confirmations || 0,
       txId: txInfo.txId || tx.getId(),
       txHex: txInfo.txHex || tx.toHex()
     })
