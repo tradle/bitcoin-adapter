@@ -3,6 +3,8 @@
 
 Bitcoin network adapter for [@tradle/engine](https://github.com/tradle/engine)
 
+See adapter [API spec](https://github.com/tradle/engine/blob/eth/adapter.md)
+
 ## Usage
 
 ```js
