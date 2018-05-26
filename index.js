@@ -22,6 +22,7 @@ function getNetworkAPI ({ networkName, constants }) {
     blockchain: 'bitcoin',
     name: networkName,
     minOutputAmount: constants.dustThreshold + 1,
+    curve: 'secp256k1',
     constants,
     pubKeyToAddress,
     createTransactor,
