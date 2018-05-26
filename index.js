@@ -39,6 +39,7 @@ function getNetworkAPI ({ networkName, constants }) {
   function wrapCommonBlockchain (blockchain) {
     const { blocks, addresses, transactions, info } = blockchain
     return {
+      network: api,
       info: info && info.bind(blockchain),
       blocks: {
         latest: blocks.latest.bind(blocks)
