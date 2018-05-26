@@ -17,20 +17,27 @@ Object.keys(networks).forEach(networkName => {
 
 function getNetworkAPI ({ networkName, constants }) {
 
-  const api = {
+  let api
+  const network = {
     blockchain: 'bitcoin',
     name: networkName,
     minOutputAmount: constants.dustThreshold + 1,
     constants,
     pubKeyToAddress,
-    createBlockchainAPI,
     createTransactor,
+    createBlockchainAPI,
     wrapCommonBlockchain,
+    // lazy
+    get api() {
+      if (!api) api = network.createBlockchainAPI()
+
+      return api
+    },
     // specific to bitcoin
     privToWIF
   }
 
-  return api
+  return network
 
   function createBlockchainAPI () {
     return wrapCommonBlockchain(new Blockr(networkName))
@@ -39,7 +46,6 @@ function getNetworkAPI ({ networkName, constants }) {
   function wrapCommonBlockchain (blockchain) {
     const { blocks, addresses, transactions, info } = blockchain
     return {
-      network: api,
       info: info && info.bind(blockchain),
       blocks: {
         latest: blocks.latest.bind(blocks)
@@ -82,13 +88,13 @@ function getNetworkAPI ({ networkName, constants }) {
     }
   }
 
-  function createTransactor ({ privateKey, blockchain }) {
-    if (!blockchain) blockchain = createBlockchainAPI()
+  function createTransactor ({ privateKey, api, /*backwards compat*/ blockchain }) {
+    if (!api) api = blockchain || createBlockchainAPI()
 
     const Wallet = require('@tradle/simple-wallet')
     const transactor = Wallet.transactor({
       networkName,
-      blockchain,
+      blockchain: api,
       priv: privateKey
     })
 
